@@ -31,12 +31,12 @@ def print_directory_tree_with_inodes(path='.'):
         root_inode = root_stat.st_ino
         root_parent_inode = os.stat(os.path.dirname(path)).st_ino if os.path.dirname(path) else None
         root_perms = oct(root_stat.st_mode)[-3:]
-        type = get_file_type_char(root_stat.st_mode)
+        ftype = get_file_type_char(root_stat.st_mode)
 
         #print(f"{'Path':<40} {'Inode':<12} {'Parent Inode':<12} {'Perms'}")
         #print("-" * 80)
         #print(f"{path:<40} {root_inode:<12} {root_parent_inode or 'None':<12} {root_perms} {type}")
-        print(f"{path}|{root_inode}|{root_parent_inode or 'None'}|{root_perms}|{type}")
+        print(f"{path}|{root_inode}|{root_parent_inode or 'None'}|{root_perms}|{ftype}")
 
         for root, dirs, files in os.walk(path):
             # Process directories first to show hierarchy
@@ -47,13 +47,13 @@ def print_directory_tree_with_inodes(path='.'):
                         continue
                     stat_info = os.stat(full_path)
                     parent_stat = os.stat(root)
-                    type = get_file_type_char(stat_info.st_mode)
+                    ftype = get_file_type_char(stat_info.st_mode)
 
                     #print(f"{full_path:<40} {stat_info.st_ino:<12} {parent_stat.st_ino:<12} {oct(stat_info.st_mode)[-3:]} {type}")
-                    if (type != "l"):
+                    if type != "l":
                         print_directory_tree_with_inodes(full_path)
                     else:
-                        print(f"{full_path}|{stat_info.st_ino}|{parent_stat.st_ino}|{oct(stat_info.st_mode)[-3:]}|{type}")
+                        print(f"{full_path}|{stat_info.st_ino}|{parent_stat.st_ino}|{oct(stat_info.st_mode)[-3:]}|{ftype}")
                 except PermissionError:
                     print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}")
 
@@ -65,10 +65,10 @@ def print_directory_tree_with_inodes(path='.'):
                         continue
                     stat_info = os.stat(full_path)
                     parent_stat = os.stat(root)
-                    type = get_file_type_char(stat_info.st_mode)
+                    ftype = get_file_type_char(stat_info.st_mode)
 
                     #print(f"{full_path:<40} {stat_info.st_ino:<12} {parent_stat.st_ino:<12} {oct(stat_info.st_mode)[-3:]} {type}")
-                    print(f"{full_path}|{stat_info.st_ino}|{parent_stat.st_ino}|{oct(stat_info.st_mode)[-3:]}|{type}")
+                    print(f"{full_path}|{stat_info.st_ino}|{parent_stat.st_ino}|{oct(stat_info.st_mode)[-3:]}|{ftype}")
                 except PermissionError:
                     print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}")
 
