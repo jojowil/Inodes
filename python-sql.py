@@ -24,7 +24,7 @@ grant select on ciss110p8.* to 'ciss110p8'@'%';
 for line in sys.stdin:
     line = line.strip()
     parts = line.split("|")
-    file = parts[0].split("/")[-1]
+    file = "/" if parts[0] == "/" else parts[0].split("/")[-1]
     inode = parts[1]
     pinode = parts[2]
     perms = parts[3]
