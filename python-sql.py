@@ -24,10 +24,14 @@ grant select on ciss110p8.* to 'ciss110p8'@'%';
 for line in sys.stdin:
     line = line.strip()
     parts = line.split("|")
-    file = "/" if parts[0] == "/" else parts[0].split("/")[-1]
     inode = parts[1]
+    # inode 2 is the root directory
+    file = "/" if inode == 2 else parts[0].split("/")[-1]
     pinode = parts[2]
     perms = parts[3]
     ftype = parts[4]
 
-    print(f"insert into entries values ('{file}',{inode},{pinode},{perms},'{ftype}')")
+    # Inode 1 is reserved for the bad-block map and will be duplicated.
+    # They may also be used for /proc and /sys, etc.
+    if inode != 1:
+        print(f"insert into entries values ('{file}',{inode},{pinode},{perms},'{ftype}')")
