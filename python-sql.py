@@ -33,5 +33,5 @@ for line in sys.stdin:
 
     # Inode 1 is reserved for the bad-block map and will be duplicated.
     # They may also be used for /proc and /sys, etc.
-    if inode != 1:
+    if inode != 1 and pinode != 1:
         print(f"insert into entries values ('{file}',{inode},{pinode},{perms},'{ftype}')")
