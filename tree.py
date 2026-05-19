@@ -29,18 +29,20 @@ def print_files(path):
         for name in files:
             full_path = os.path.join(root, name)
             try:
+                # no symlinks
                 if os.path.islink(full_path):
+                    print(f"{full_path} is a symlink. Skipping.", file=sys.stderr)
                     continue
-                else:
-                    ftype = get_file_type_char(os.stat(full_path).st_mode)
-                    if ftype == 'f':
-                        print_formatted_path(full_path)
+
+                ftype = get_file_type_char(os.stat(full_path).st_mode)
+                if ftype == 'f':
+                    print_formatted_path(full_path)
             except PermissionError:
-                print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}")
+                print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}", file=sys.stderr)
     except FileNotFoundError:
-        print(f"Error: The path '{path}' was not found.")
+        print(f"Error: The path '{path}' was not found.", file=sys.stderr)
     except PermissionError:
-        print(f"Error: Permission denied accessing '{path}'.")
+        print(f"Error: Permission denied accessing '{path}'.", file=sys.stderr)
 
 
 def print_formatted_path(path):
@@ -51,9 +53,9 @@ def print_formatted_path(path):
         ftype = get_file_type_char(root_stat.st_mode)
         print(f"{path}|{root_stat.st_ino}|{parent_stat.st_ino}|{oct(root_stat.st_mode)[-3:]}|{ftype}")
     except FileNotFoundError:
-        print(f"Error: The path '{path}' was not found.")
+        print(f"Error: The path '{path}' was not found.", file=sys.stderr)
     except PermissionError:
-        print(f"Error: Permission denied accessing '{path}'.")
+        print(f"Error: Permission denied accessing '{path}'.", file=sys.stderr)
 
 
 def print_directory_tree_with_inodes(path):
@@ -73,18 +75,18 @@ def print_directory_tree_with_inodes(path):
                         print_directory_tree_with_inodes(full_path)
                         print_files(full_path)
             except PermissionError:
-                print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}")
+                print(f"{full_path:<40} {'Permission Denied':<12} {'':<12} {'':<5}", file=sys.stderr)
     except FileNotFoundError:
-        print(f"Error: The path '{path}' was not found.")
+        print(f"Error: The path '{path}' was not found.", file=sys.stderr)
     except PermissionError:
-        print(f"Error: Permission denied accessing '{path}'.")
+        print(f"Error: Permission denied accessing '{path}'.", file=sys.stderr)
 
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         target_dir = input("Enter directory path (press Enter for current dir): ").strip()
         if not target_dir:
-            print("\nYou must provide a path intractively or on the command line.\n")
+            print("\nYou must provide a path intractively or on the command line.\n", file=sys.stderr)
             sys.exit(1)
     else:
         target_dir = sys.argv[1]

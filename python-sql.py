@@ -1,32 +1,24 @@
 import sys
 
-# reads a redirected file and cuts it up from the form:
-#  path|inode|parentinode|mode|type
-
 '''
-create database ciss110p8;
+create database hms;
 
-use ciss110p8;
+use hms;
 
 create table entries(
     name varchar(255)
-    , inode int unique
+    , inode int
     , pinode int
     , mode smallint
     , type enum('f', 'd')
 );
-
-create user 'ciss110p8'@'%' identified by 'ciss110p8';
-
-grant select on ciss110p8.* to 'ciss110p8'@'%';
 '''
 
 for line in sys.stdin:
     line = line.strip()
     parts = line.split("|")
     inode = parts[1]
-    # inode 2 is the root directory
-    file = "/" if inode == 2 else parts[0].split("/")[-1]
+    file = "/" if inode == '2' else parts[0].split("/")[-1]
     pinode = parts[2]
     perms = parts[3]
     ftype = parts[4]
