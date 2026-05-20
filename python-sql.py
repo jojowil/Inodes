@@ -6,11 +6,11 @@ create database hms;
 use hms;
 
 create table entries(
-    name varchar(255)
-    , inode int
-    , pinode int
-    , mode smallint
-    , type enum('f', 'd')
+    name varchar(255) not null
+    , inode bigint not null
+    , pinode bigint not null
+    , mode smallint not null
+    , type enum('f', 'd') not null
 );
 '''
 
